@@ -7,6 +7,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { errorHandler } from "./middleware/errorHandler";
 const app = express();
 
+
 app.use(express.json())
 app.use(clerkMiddleware())
 app.get("/health",(req,res)=>{
