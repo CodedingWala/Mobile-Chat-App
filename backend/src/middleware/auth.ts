@@ -1,26 +1,50 @@
 import type { Request, Response, NextFunction } from "express";
-import { getAuth } from "@clerk/express";
+import jwt from "jsonwebtoken";
 import { User } from "../models/User";
-import { requireAuth } from "@clerk/express";
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export type AuthRequest = Request & {
   userId?: string;
 };
 
-export const protectRoute = [
-  requireAuth(),
-  async (req: AuthRequest, res: Response, next: NextFunction) => {
-    try {
-      const { userId: clerkId } = getAuth(req);
-      const user = await User.findOne({ clerkId });
-      if (!user) return res.status(404).json({ message: "User not found" });
-
-      req.userId = user._id.toString();
-
-      next();
-    } catch (error) {
-      res.status(500);
-      next(error);
+export const protectRoute = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+   
+    const token = req.headers.authorization?.split(" ")[1];
+    
+    if (!token) {
+      res.status(401).json({ message: "Not authorized. No token provided." });
+      return;
     }
-  },
-];
+    
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+    
+
+    const user = await User.findById(decoded.id);
+    
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    
+  
+    req.userId = user._id.toString();
+    
+    next();
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({ message: "Invalid token" });
+      return;
+    }
+    
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({ message: "Token expired" });
+      return;
+    }
+    
+    res.status(500).json({ message: "Server error" });
+    next(error);
+  }
+};
