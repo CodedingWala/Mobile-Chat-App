@@ -4,12 +4,14 @@ import { User } from "../models/User"
 import { Message } from "../models/message"
 import { Chat } from "../models/Chat"
 import { cron } from "bun"
-import { verifyToken } from "@clerk/express"
+import jwt from "jsonwebtoken"
 
 
-export const onlineUsers: Map<String, String> = new Map()
+export const onlineUsers: Map<string, string> = new Map()
 
 export async function initializeSocket(httpServer: httpServer) {
+
+    const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
     const allowedOrigins = [
         "http://localhost:8081",
         "http://localhost:5173",
@@ -23,11 +25,9 @@ export async function initializeSocket(httpServer: httpServer) {
         const token = socket.handshake.auth.token;
         if (!token) return next(new Error("Authentication error"));
         try {
-            const session = await verifyToken(token, { secretKey: process.env.CLERK_SECRET_KEY! });
+            const decoded = jwt.verify(token, JWT_SECRET) as { id: string }
 
-            const clerkId = session.sub;
-
-            const user = await User.findOne({ clerkId });
+            const user = await User.findById(decoded.id);
             if (!user) return next(new Error("User not found"));
 
             socket.data.userId = user._id.toString();
