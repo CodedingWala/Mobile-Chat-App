@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-     "dev": "bun --watch index.ts",
+    "dev": "bun --watch index.ts",
     "start": "bun index.ts",
     "build": "bun install"
   },
@@ -20,6 +20,7 @@
     "cors": "2.8.5",
     "express": "5.2.1",
     "mongoose": "9.0.2",
+    "node-cron": "^4.2.1",
     "socket.io": "4.8.2"
   }
 }
