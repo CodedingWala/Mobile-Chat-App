@@ -1,5 +1,4 @@
 import type { NextFunction, Response } from "express";
-import { Types } from "mongoose";
 import type { AuthRequest } from "../middleware/auth";
 import { Chat } from "../models/Chat";
 
@@ -41,9 +40,6 @@ export async function getOrCreateChat(req: AuthRequest, res: Response, next: Nex
       return;
     }
 
-    if (!Types.ObjectId.isValid(participantId)) {
-      return res.status(400).json({ message: "Invalid participant ID" });
-    }
 
     if (userId === participantId) {
       res.status(400).json({ message: "Cannot create chat with yourself" });

@@ -1,0 +1,47 @@
+import { View, Text } from 'react-native'
+import React from 'react'
+import { Redirect, Tabs } from 'expo-router'
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from '@clerk/expo';
+
+const TabLayout = () => {
+  const { isSignedIn, isLoaded } = useAuth()
+  if (!isLoaded) { return null }
+  if(!isSignedIn){<Redirect href={"/(auth)"} />}
+  return (
+    <Tabs screenOptions={{
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: "#0D0D0F",
+        borderTopColor: "#1A1A1D",
+        borderTopWidth: 1,
+        height: 88,
+        padding: 8
+      },
+      tabBarActiveTintColor: "#A261F4",
+      tabBarInactiveTintColor: "#C7ACF9",
+      tabBarLabelStyle: { fontSize: 16, fontWeight: "600" },
+
+
+    }}>
+      <Tabs.Screen name='index' options={{
+        title: "Chats",
+        tabBarIcon: ({ color, focused, size }) => (
+          <Ionicons
+            name={focused ? "chatbubbles" : "chatbubbles-outline"} size={size} color={color}
+          />
+        )
+      }} />
+      <Tabs.Screen name='profile' options={{
+        title: "profile",
+        tabBarIcon: ({ color, focused, size }) => (
+          <Ionicons
+            name={focused ? "person" : "person-outline"} size={size} color={color}
+          />
+        )
+      }} />
+    </Tabs>
+  )
+}
+
+export default TabLayout
