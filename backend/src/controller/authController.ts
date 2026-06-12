@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { User } from "../models/User";
-import { clerkClient, getAuth } from "@clerk/express";
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken';
 import { generateToken } from "../utils/getToken";

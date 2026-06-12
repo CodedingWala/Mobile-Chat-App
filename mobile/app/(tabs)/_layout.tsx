@@ -1,13 +1,47 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Redirect, Tabs } from 'expo-router'
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from '@clerk/expo';
+
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import * as SecureStore from 'expo-secure-store';
+
 
 const TabLayout = () => {
-  const { isSignedIn, isLoaded } = useAuth()
-  if (!isLoaded) { return null }
-  if(!isSignedIn){<Redirect href={"/(auth)"} />}
+ const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const checkToken = async () => {
+    try {
+      const token = await SecureStore.getItem("user");
+      if (!token) {
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.error("Error checking token:", error);
+      setIsAuthenticated(false);
+    }
+  };
+
+  if (isAuthenticated === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)" />;
+  }
+
+  if (true) { <Redirect href={"/(auth)"} /> }
   return (
     <Tabs screenOptions={{
       headerShown: false,
