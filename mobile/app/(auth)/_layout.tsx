@@ -13,7 +13,7 @@ const AuthLayout = () => {
 
   const checkToken = async () => {
     try {
-      const token = await SecureStore.getItem("user");
+      const token = await SecureStore.getItem("token");
       if (token) {
         setIsAuthenticated(true);
       } else {
