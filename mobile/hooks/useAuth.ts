@@ -51,6 +51,7 @@ export const useRegister = () => {
         
         onError: (error: any) => {
             const message = error.response?.data?.message || "Email already exists";
+            console.log(error.response)
             Alert.alert('Registration Failed', message);
         },
     });

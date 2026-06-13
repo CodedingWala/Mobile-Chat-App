@@ -14,18 +14,18 @@ export const useApi = () => {
 
     useEffect(() => {
         let interceptor: number;
-        
-        const setupInterceptor = async () => {
-            const token = await SecureStore.getItemAsync("user");
-            
-            interceptor = api.interceptors.request.use((config) => {
+
+        const setupInterceptor = () => {
+
+            interceptor = api.interceptors.request.use(async (config) => {
+                const token = await SecureStore.getItemAsync("token");
                 if (token) {
                     config.headers.Authorization = `Bearer ${token}`;
                 }
                 return config;
             });
         };
-        
+
         setupInterceptor();
 
         return () => {

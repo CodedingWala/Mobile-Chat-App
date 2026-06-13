@@ -1,9 +1,7 @@
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Redirect, Tabs } from 'expo-router'
-import { Ionicons } from "@expo/vector-icons";
-
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from "@expo/vector-icons"
 
 import * as SecureStore from 'expo-secure-store';
 
@@ -17,7 +15,7 @@ const TabLayout = () => {
 
   const checkToken = async () => {
     try {
-      const token = await SecureStore.getItem("token");
+      const token =  await SecureStore.getItemAsync("token");
       if (!token) {
         setIsAuthenticated(false);
       } else {
