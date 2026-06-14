@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { View, Text, Pressable, ActivityIndicator, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import * as SecureStore from 'expo-secure-store';
 import { useLogin } from "../../hooks/useAuth";
+import { ChatBubbleIcon, EyeOffOutlineIcon, EyeOutlineIcon, LockOutlineIcon, MailOutlineIcon } from "../../lib/customeIcons";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -55,13 +55,13 @@ const LoginScreen = () => {
 
   return (
     <View className="flex-1 bg-gray-50">
-        <KeyboardAvoidingView 
-         behavior={Platform.OS === "ios" ? "padding" : "height"}
-           style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-        >
-      <SafeAreaView className="flex-1">
-         
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <SafeAreaView className="flex-1">
+
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
@@ -70,7 +70,7 @@ const LoginScreen = () => {
             <View className="flex-1 justify-center px-6 py-10">
               <View className="items-center mb-8">
                 <View className="w-20 h-20 bg-blue-600 rounded-2xl items-center justify-center mb-4 shadow-lg">
-                  <Ionicons name="chatbubbles" size={44} color="white" />
+                  <ChatBubbleIcon size={44} color="white" />
                 </View>
                 <Text className="text-3xl font-bold text-gray-900">ChatApp</Text>
                 <Text className="text-gray-500 text-base mt-1">Connect with friends</Text>
@@ -93,7 +93,7 @@ const LoginScreen = () => {
                       } shadow-sm`}
                   >
                     <View className="pl-4">
-                      <Ionicons name="mail-outline" size={20} color="#6B7280" />
+                      <MailOutlineIcon size={20} color="#6B7280" />
                     </View>
                     <TextInput
                       value={email}
@@ -126,7 +126,7 @@ const LoginScreen = () => {
                       } shadow-sm`}
                   >
                     <View className="pl-4">
-                      <Ionicons name="lock-closed-outline" size={20} color="#6B7280" />
+                      <LockOutlineIcon size={20} color="#6B7280" />
                     </View>
                     <TextInput
                       value={password}
@@ -146,11 +146,10 @@ const LoginScreen = () => {
                       onPress={() => setShowPassword((prev) => !prev)}
                       className="pr-4"
                     >
-                      <Ionicons
-                        name={showPassword ? "eye-off-outline" : "eye-outline"}
-                        size={20}
-                        color="#6B7280"
-                      />
+                      {showPassword ? <EyeOffOutlineIcon size={20}
+                        color="#6B7280" /> :
+                        <EyeOutlineIcon size={20}
+                          color="#6B7280" />}
                     </TouchableOpacity>
                   </View>
                   {errors.password && (
@@ -180,8 +179,8 @@ const LoginScreen = () => {
               </View>
             </View>
           </ScrollView>
-      </SafeAreaView>
-        </KeyboardAvoidingView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </View>
   );
 };

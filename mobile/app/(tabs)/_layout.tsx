@@ -1,13 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text, ActivityIndicator, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Redirect, Tabs } from 'expo-router'
-import { Ionicons } from "@expo/vector-icons"
-
 import * as SecureStore from 'expo-secure-store';
-
+import { ChatBubbleIcon, PersonOutlineIcon } from '../../lib/customeIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TabLayout = () => {
- const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     checkToken();
@@ -15,7 +14,7 @@ const TabLayout = () => {
 
   const checkToken = async () => {
     try {
-      const token =  await SecureStore.getItemAsync("token");
+      const token = await SecureStore.getItemAsync("token");
       if (!token) {
         setIsAuthenticated(false);
       } else {
@@ -29,8 +28,9 @@ const TabLayout = () => {
 
   if (isAuthenticated === null) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F9FAFB' }}>
+        <ActivityIndicator size="large" color="#2563EB" />
+        <Text className="text-gray-500 mt-4">Loading...</Text>
       </View>
     );
   }
@@ -39,41 +39,45 @@ const TabLayout = () => {
     return <Redirect href="/(auth)" />;
   }
 
-  if (true) { <Redirect href={"/(auth)"} /> }
   return (
-    <Tabs screenOptions={{
-      headerShown: false,
-      tabBarStyle: {
-        backgroundColor: "#0D0D0F",
-        borderTopColor: "#1A1A1D",
-        borderTopWidth: 1,
-        height: 88,
-        padding: 8
-      },
-      tabBarActiveTintColor: "#A261F4",
-      tabBarInactiveTintColor: "#C7ACF9",
-      tabBarLabelStyle: { fontSize: 16, fontWeight: "600" },
-
-
-    }}>
-      <Tabs.Screen name='index' options={{
-        title: "Chats",
-        tabBarIcon: ({ color, focused, size }) => (
-          <Ionicons
-            name={focused ? "chatbubbles" : "chatbubbles-outline"} size={size} color={color}
-          />
-        )
-      }} />
-      <Tabs.Screen name='profile' options={{
-        title: "profile",
-        tabBarIcon: ({ color, focused, size }) => (
-          <Ionicons
-            name={focused ? "person" : "person-outline"} size={size} color={color}
-          />
-        )
-      }} />
-    </Tabs>
-  )
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F9FAFB' }} edges={['bottom']}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: "#FFFFFF",
+            borderTopColor: "#E5E7EB",
+            borderTopWidth: 1,
+            height: Platform.OS === 'ios' ? 83 : 60,
+            paddingBottom: Platform.OS === 'ios' ? 20 : 8,
+            paddingTop: 8,
+          },
+          tabBarActiveTintColor: "#2563EB",
+          tabBarInactiveTintColor: "#9CA3AF",
+          tabBarLabelStyle: { fontSize: 12, fontWeight: "500" },
+        }}
+      >
+        <Tabs.Screen 
+          name='index' 
+          options={{
+            title: "Chats",
+            tabBarIcon: ({ color, focused, size }) => (
+              <ChatBubbleIcon size={size} color={focused? "#2563EB" :"#9CA3AF"  } focused={focused} />
+            )
+          }} 
+        />
+        <Tabs.Screen 
+          name='profile' 
+          options={{
+            title: "Profile",
+            tabBarIcon: ({ color, focused, size }) => (
+              <PersonOutlineIcon size={size} color={focused? "#2563EB" :"#9CA3AF"  } />
+            )
+          }} 
+        />
+      </Tabs>
+    </SafeAreaView>
+  );
 }
 
-export default TabLayout
+export default TabLayout;

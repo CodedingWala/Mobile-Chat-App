@@ -8,9 +8,7 @@ export const UseChats = () => {
     return useQuery<Chat[]>({
         queryKey: ["chats"],
         queryFn: async () => {
-            console.log("🔵 1. queryFn started - making API call...");
             const { data } = await api.get("/chat");
-            console.log("🟢 2. API call succeeded! Data:", data);
             return data ?? [];
         },
         staleTime: 5 * 60 * 1000,

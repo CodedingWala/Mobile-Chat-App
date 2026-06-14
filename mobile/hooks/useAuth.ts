@@ -1,9 +1,10 @@
 // hooks/useLogin.ts
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useApi } from "../lib/axios";
 import * as SecureStore from 'expo-secure-store';
 import { router } from "expo-router";
 import { Alert } from "react-native";
+import { User } from "../types";
 
 export const useLogin = () => {
     const api = useApi();
@@ -51,8 +52,22 @@ export const useRegister = () => {
         
         onError: (error: any) => {
             const message = error.response?.data?.message || "Email already exists";
-            console.log(error.response)
+
             Alert.alert('Registration Failed', message);
         },
     });
 };
+
+
+export const GetMe=()=>{
+    const api=useApi()
+   return useQuery<User>({
+            queryKey: ["currentUser"],
+            queryFn: async () => {
+                const { data } = await api.get("/auth/me");
+                return data || [];
+            },
+            staleTime: 5 * 60 * 1000, 
+            retry: 1,
+        })
+}

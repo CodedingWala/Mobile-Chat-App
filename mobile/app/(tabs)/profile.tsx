@@ -2,9 +2,9 @@
 import { View, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
+import { ChevronForwardIcon, EditIcon, LockOutlineIcon, LogoutOutlineIcon, MailOutlineIcon, PersonOutlineIcon, SettingsOutlineIcon } from '../../lib/customeIcons'
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>(null)
@@ -102,7 +102,7 @@ const Profile = () => {
         <View className="bg-white rounded-xl mx-4 p-6 shadow-sm mb-6">
           <View className="flex-row items-center mb-4 pb-4 border-b border-gray-100">
             <View className="w-10 h-10 bg-blue-100 rounded-full items-center justify-center mr-3">
-              <Ionicons name="person-outline" size={20} color="#2563EB" />
+             <PersonOutlineIcon size={20} color="#2563EB"  />
             </View>
             <View className="flex-1">
               <Text className="text-gray-500 text-xs">Full Name</Text>
@@ -114,7 +114,7 @@ const Profile = () => {
 
           <View className="flex-row items-center">
             <View className="w-10 h-10 bg-blue-100 rounded-full items-center justify-center mr-3">
-              <Ionicons name="mail-outline" size={20} color="#2563EB" />
+              <MailOutlineIcon size={20} color="#2563EB" />
             </View>
             <View className="flex-1">
               <Text className="text-gray-500 text-xs">Email Address</Text>
@@ -131,27 +131,27 @@ const Profile = () => {
             className="flex-row items-center py-3 border-b border-gray-100"
             onPress={() => Alert.alert('Coming Soon', 'Edit profile feature coming soon!')}
           >
-            <Ionicons name="create-outline" size={22} color="#6B7280" />
+            <EditIcon size={22} color="#6B7280" />
             <Text className="flex-1 text-gray-700 text-base ml-3">Edit Profile</Text>
-            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+            <ChevronForwardIcon size={20} color="#9CA3AF" />
           </TouchableOpacity>
 
           <TouchableOpacity 
             className="flex-row items-center py-3 border-b border-gray-100"
             onPress={() => Alert.alert('Coming Soon', 'Privacy settings coming soon!')}
           >
-            <Ionicons name="lock-closed-outline" size={22} color="#6B7280" />
+            <LockOutlineIcon  size={22} color="#6B7280" />
             <Text className="flex-1 text-gray-700 text-base ml-3">Privacy & Security</Text>
-            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+            <ChevronForwardIcon size={20} color="#9CA3AF" />
           </TouchableOpacity>
 
           <TouchableOpacity 
             className="flex-row items-center py-3"
             onPress={() => Alert.alert('Coming Soon', 'App settings coming soon!')}
           >
-            <Ionicons name="settings-outline" size={22} color="#6B7280" />
+            <SettingsOutlineIcon size={22} color="#6B7280" />
             <Text className="flex-1 text-gray-700 text-base ml-3">App Settings</Text>
-            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+            <ChevronForwardIcon size={20} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
 
@@ -168,7 +168,7 @@ const Profile = () => {
               <ActivityIndicator size="small" color="#FFFFFF" />
             ) : (
               <>
-                <Ionicons name="log-out-outline" size={20} color="white" />
+                <LogoutOutlineIcon  size={20} color="white"/>
                 <Text className="text-white font-bold text-base ml-2">Logout</Text>
               </>
             )}
