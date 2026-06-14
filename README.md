@@ -9,7 +9,13 @@ Option B — Server-side storage (MongoDB Atlas)
 Messages are stored in MongoDB Atlas. When the chat screen opens, message history is fetched from the backend. New messages are saved to the database by the server and delivered to clients via Socket.io in real time.
 
 Test Credentials
-AccountEmailPasswordUser 1Person1@gmail.com123456User 2Person2@gmail.com098765
+AccountEmailPasswordUser1
+Email: Person1@gmail.com 
+Password:123456
+
+AccountEmailPasswordUser2
+Email: Person2@gmail.com
+Password: 098765
 
 Tech Stack
 Frontend
